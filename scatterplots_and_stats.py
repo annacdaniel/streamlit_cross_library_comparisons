@@ -59,11 +59,8 @@ def correlation_stats(
             }
         )
     result = pd.DataFrame(rows)
-    all_p = np.array(list(result["spearman_p"]) + list(result["pearson_p"]))
-    adj_p = false_discovery_control(all_p, method=p_adjust_method)
-    n = len(result)
-    result["spearman_p_adj"] = adj_p[:n]
-    result["pearson_p_adj"] = adj_p[n:]
+    result["spearman_p_adj"] = false_discovery_control(result["spearman_p"].values, method=p_adjust_method)
+    result["pearson_p_adj"] = false_discovery_control(result["pearson_p"].values, method=p_adjust_method)
     result.attrs["comparison"] = f"{label1} vs {label2}"
     return result
 
